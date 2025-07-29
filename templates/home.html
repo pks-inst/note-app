@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Note App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+        }
+
+        button {
+            padding: 8px 12px;
+        }
+
+        .delete-btn {
+            background-color: #e57373;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .note-item {
+            background-color: #f4f4f4;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .actions {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 Welcome to Your Notes</h1>
+
+    <form action="/" method="POST">
+        <input type="text" name="note" placeholder="Type your note here..." required>
+        <button type="submit">Add</button>
+    </form>
+
+    <form action="/" method="POST" style="margin-top: 10px;">
+        <button type="submit" name="delete" value="1" class="delete-btn">Delete All Notes</button>
+    </form>
+
+    {% if notes %}
+        <h2>Your Notes:</h2>
+        {% for n in notes %}
+            <div class="note-item">
+                {{ n.text }}
+                <div class="actions">
+                    <form action="{{ url_for('delete_note', note_id=n.id) }}" method="POST" style="display:inline;">
+                        <button class="delete-btn">🗑️</button>
+                    </form>
+                    <a href="{{ url_for('edit_note', note_id=n.id) }}">✏️</a>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No notes yet. Add your first note above!</p>
+    {% endif %}
+
+    <hr>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
